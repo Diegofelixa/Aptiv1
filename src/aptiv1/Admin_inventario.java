@@ -1,52 +1,56 @@
 package aptiv1;
 
-import com.mysql.jdbc.Connection;
-
-import conexion.Conexion;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.GroupLayout;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.border.EmptyBorder;
-
-
-import java.awt.event.KeyAdapter;
-
-import javax.swing.JTextField;
-import javax.swing.RowFilter;
-
+import java.awt.BorderLayout;
 import java.awt.Color;
-
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 
+import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
-public class Administracable extends javax.swing.JFrame {
+import com.mysql.jdbc.Connection;
 
-    DefaultTableModel modelo = new DefaultTableModel();
-    TableRowSorter trs;
-    public Administracable() {
-    	
-    	
-    	setBounds(100,100,757,464);
+import conexion.Conexion;
+
+public class Admin_inventario extends JFrame {
+
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 */
+
+	/**
+	 * Create the frame.
+	 */
+	 DefaultTableModel modelo = new DefaultTableModel();
+	    TableRowSorter trs;
+	public Admin_inventario() {
+		setBounds(100,100,757,464);
     	f_1= new Fondo();
     	f_1.setBorder(new EmptyBorder(5,5,5,5));
     	setContentPane(f_1);
@@ -63,21 +67,20 @@ public class Administracable extends javax.swing.JFrame {
             Conexion conn = new Conexion();
             java.sql.Connection con = conn.conexion();
 
-            String sql = "SELECT `leadcode` , `color` , `longuitud` , `numero_hilos` , `calibre` , `aislante` FROM `cable`";
+            String sql = "Select inv.id_inventario, inv.cantidad_atados, inv.fecha_hora, cf.id_final AS 'l1' from inventario inv inner join cable_fin cf on inv.fk_final=cf.id_final ";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
 
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
             int cantidadColumnas = rsMd.getColumnCount();
 
-            modelo.addColumn("Código");
-            modelo.addColumn("Color");
-            modelo.addColumn("Longitud");
-            modelo.addColumn("Numero de Hilos");
-            modelo.addColumn("Calibre");
-            modelo.addColumn("Aislante");
+            modelo.addColumn("# Inventario");
+            modelo.addColumn("Cantidad de Atados");
+            modelo.addColumn("Fecha y Hora");
+            modelo.addColumn("Codigo del cable");
+           
 
-            int[] anchos = {50, 200, 50, 100, 50, 50};
+            int[] anchos = {100, 100, 100, 100};
             for (int i = 0; i < jtProductos.getColumnCount(); i++) {
                 jtProductos.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
             }
@@ -108,7 +111,7 @@ public class Administracable extends javax.swing.JFrame {
         Conexion conn = new Conexion();
         java.sql.Connection con = conn.conexion();
 
-        String sql = "SELECT `leadcode` , `color` , `longuitud` , `numero_hilos` , `calibre` , `aislante` FROM `cable`";
+        String sql = "Select inv.id_inventario, inv.cantidad_atados, inv.fecha_hora, cf.id_final AS 'l1' from inventario inv inner join cable_fin cf on inv.fk_final=cf.id_final ";
         ps = con.prepareStatement(sql);
         rs = ps.executeQuery();
 
@@ -139,7 +142,7 @@ public class Administracable extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel5.setForeground(Color.WHITE);
         jLabel5.setFont(new Font("Tahoma", Font.BOLD, 13));
-        jLabel5.setIcon(new ImageIcon(Administracable.class.getResource("/imagenes/busqueda.png")));
+        jLabel5.setIcon(new ImageIcon(Admin_inventario.class.getResource("/imagenes/busqueda.png")));
         jLabel5.setBounds(18, 47, 37, 14);
          jLabel5.setText("Busqueda:");
 
@@ -148,13 +151,13 @@ public class Administracable extends javax.swing.JFrame {
         
         jtProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
        /* jtProductos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -210,54 +213,29 @@ public class Administracable extends javax.swing.JFrame {
         			.addContainerGap(75, Short.MAX_VALUE))
         );
         panel.setLayout(null);
-        
-        JButton btnRegistrar = new JButton("Nuevo");
-        btnRegistrar.setBackground(Color.WHITE);
-        btnRegistrar.setIcon(new ImageIcon(Administracable.class.getResource("/imagenes/agreg.png")));
-        btnRegistrar.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent arg0) {
-        		
-        		 JDialog dialog= new Formulario(Administracable.this, true);
-            	 dialog.addWindowListener(new WindowAdapter() {
-                     public void windowClosed(WindowEvent e) {
-                         actualizar();
-                     }
-                 });
-                  //hago visible el dialogo
-                 dialog.setVisible(true);
-                 dialog.setLocationRelativeTo(null);
-
-        		
-        	}
-        });
-       
-        btnRegistrar.setBounds(10, 6, 104, 23);
-        
-        panel.add(btnRegistrar);
         btnEliminar = new javax.swing.JButton();
-        btnEliminar.setIcon(new ImageIcon(Administracable.class.getResource("/imagenes/elimin.png")));
-        btnEliminar.setBounds(124, 6, 101, 23);
+        btnEliminar.setIcon(new ImageIcon(Admin_inventario.class.getResource("/imagenes/elimin.png")));
+        btnEliminar.setBounds(10, 6, 101, 23);
        
         panel.add(btnEliminar);
         
                 btnEliminar.setText("Eliminar");
                 
                 JButton btnModificar_1 = new JButton("Modificar");
-                btnModificar_1.setIcon(new ImageIcon(Administracable.class.getResource("/imagenes/edit.png")));
+                btnModificar_1.setIcon(new ImageIcon(Admin_inventario.class.getResource("/imagenes/edit.png")));
+               
                 btnModificar_1.addActionListener(new ActionListener() {
                 	
                 		public void actionPerformed(ActionEvent evt) {
-                			
-                		 jtProductosMouseClicked(evt);
-                   		 JDialog dialog= new Formularioactualizar(Administracable.this, true);
-                       	 dialog.addWindowListener(new WindowAdapter() {
-                                public void windowClosed(WindowEvent e) {
-                                    actualizar();
-                                }
-                            });
-                             //hago visible el dialogo
-                          // dialog.setVisible(true);
-                   		
+                			 jtProductosMouseClicked(evt);
+                       		 JDialog dialog= new Actualizar_inventario(Admin_inventario.this, true);
+                           	 dialog.addWindowListener(new WindowAdapter() {
+                                    public void windowClosed(WindowEvent e) {
+                                        actualizar();
+                                    }
+                                });   			
+                		
+                            		
                    	               		
                 	}
                 });
@@ -267,7 +245,8 @@ public class Administracable extends javax.swing.JFrame {
                 		
                 	}
                 });
-                btnModificar_1.setBounds(235, 6, 115, 23);
+                btnModificar_1.setBounds(121, 6, 115, 23);
+                btnModificar_1.setVisible(false);
                 panel.add(btnModificar_1);
                 btnEliminar.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -280,16 +259,11 @@ public class Administracable extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
    
-    
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-       actualizar();
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
-    
+   
     
     private void jtProductosMouseClicked(ActionEvent evt) {//GEN-FIRST:event_jtProductosMouseClicked
     	
-      Formularioactualizar actualizar=new Formularioactualizar(null, rootPaneCheckingEnabled);
+      Actualizar_inventario actualizar=new Actualizar_inventario(null, rootPaneCheckingEnabled);
     	PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -302,7 +276,7 @@ public class Administracable extends javax.swing.JFrame {
             String codigo = jtProductos.getValueAt(Fila, 0).toString();
          
 
-            ps = conn.prepareStatement("SELECT leadcode, color, longuitud, Numero_hilos, calibre, aislante FROM cable WHERE leadcode=?");
+            ps = conn.prepareStatement("Select inv.id_inventario, inv.cantidad_atados, inv.fecha_hora, cf.id_final AS 'l1' from inventario inv inner join cable_fin cf on inv.fk_final=cf.id_final where inv.id_inventario=?");
             ps.setString(1, codigo);
             rs = ps.executeQuery();
            
@@ -310,12 +284,10 @@ public class Administracable extends javax.swing.JFrame {
 
             while (rs.next()) {
             	
-                actualizar.txtCodigo.setText(rs.getString("leadcode"));               
-                actualizar. txtColor.setText(rs.getString("color"));
-                actualizar. txtLongitud.setText(rs.getString("longuitud"));
-                actualizar.txtNumero_hilos.setText(rs.getString("numero_hilos"));
-                actualizar.txtCalibre.setText(rs.getString("calibre"));
-                actualizar.txtAislante.setText(rs.getString("aislante"));
+                actualizar.txtCodigo.setText(rs.getString("id_inventario"));               
+                actualizar. txtAtados.setText(rs.getString("cantidad_atados"));
+                actualizar.txtCable.setText(rs.getString("l1"));
+            
                
                 
             }
@@ -347,7 +319,7 @@ public class Administracable extends javax.swing.JFrame {
             
             int respuesta= JOptionPane.showConfirmDialog(null, "Realmente quiere eliminar este cable?","Confirmacion de Eliminar", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
             if(respuesta==JOptionPane.YES_OPTION) {
-            	 ps = conn.prepareStatement("DELETE FROM cable WHERE leadcode=?");
+            	 ps = conn.prepareStatement("DELETE FROM inventario WHERE id_inventario=?");
                  ps.setString(1, codigo);
                  ps.execute();
 
@@ -390,13 +362,13 @@ public class Administracable extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Administracable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Admin_inventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Administracable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Admin_inventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Administracable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Admin_inventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Administracable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Admin_inventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -405,11 +377,11 @@ public class Administracable extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
             	
-            	/*Administracable f=new Administracable();
+            	Admin_inventario f=new Admin_inventario();
             	//f.setExtendedState(MAXIMIZED_BOTH);
             	f.setSize(800,600);
             	f.setResizable(false);
-            	f.setVisible(true);*/
+            	f.setVisible(true);
             	
                
             }

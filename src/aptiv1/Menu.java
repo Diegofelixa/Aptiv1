@@ -89,6 +89,12 @@ public class Menu extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				
+				Admin_inventario f=new Admin_inventario();
+            	//f.setExtendedState(MAXIMIZED_BOTH);
+            	f.setSize(800,600);
+            	f.setLocationRelativeTo(null);
+            	f.setResizable(false);
+            	f.setVisible(true);
 				
 			}
 		});
@@ -124,15 +130,6 @@ public class Menu extends JFrame {
 		label_1.setIcon(icono_linea5);
 		contentPane.add(label_1);
 		
-		JButton btnControlInventario_1 = new JButton("Turnos");
-		btnControlInventario_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnControlInventario_1.setBounds(185, 280, 186, 38);
-		
-		contentPane.add(btnControlInventario_1);
-		
 		JButton btnAdministrarCableTratado = new JButton("Administrar cable tratado ");
 		btnAdministrarCableTratado.addMouseListener(new MouseAdapter() {
 			@Override
@@ -162,7 +159,7 @@ public class Menu extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		btnEstaciones.setBounds(185, 338, 186, 38);
+		btnEstaciones.setBounds(185, 293, 186, 38);
 		contentPane.add(btnEstaciones);
 	
 		
