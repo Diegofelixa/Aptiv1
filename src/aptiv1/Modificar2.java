@@ -335,7 +335,7 @@ public class Modificar2 extends JDialog {
 				            
 				            ps.execute();
 
-				            JOptionPane.showMessageDialog(null, "Producto Modificado");
+				            JOptionPane.showMessageDialog(null, "Cable Modificado");
 				           
 				           
 				            id=0;

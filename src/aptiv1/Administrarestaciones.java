@@ -47,7 +47,7 @@ public class Administrarestaciones extends JFrame {
 	 */
 	  DefaultTableModel modelo = new DefaultTableModel();
 	  TableRowSorter trs;
-	public Administrarestaciones() {
+	 public Administrarestaciones() {
 		setBounds(100,100,1297,482);
     	f_1= new Fondo();
     	f_1.setBorder(new EmptyBorder(5,5,5,5));
@@ -65,20 +65,20 @@ public class Administrarestaciones extends JFrame {
             Conexion conn = new Conexion();
             java.sql.Connection con = conn.conexion();
 
-            String sql = "Select hora_ini, hora_fin, nombre_turno from turno";
+            String sql = "Select nombre_estacion,descripcion,status from estacion";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
 
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
             int cantidadColumnas = rsMd.getColumnCount();
 
-            modelo.addColumn("Hora de Inicio");
-            modelo.addColumn("Hora de termino");
-            modelo.addColumn("Nombre del Turno");
+            modelo.addColumn("Nombre de la Estacion");
+            modelo.addColumn("Descripcion");
+            modelo.addColumn("Estatus");
            
       
 
-            int[] anchos = {50, 50, 50};
+            int[] anchos = {50, 100, 50};
             for (int i = 0; i < jtProductos.getColumnCount(); i++) {
                 jtProductos.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
                
@@ -112,7 +112,7 @@ public class Administrarestaciones extends JFrame {
         Conexion conn = new Conexion();
         java.sql.Connection con = conn.conexion();
 
-        String sql = "Select hora_ini, hora_fin, nombre_turno from turno";
+        String sql = "Select nombre_estacion,descripcion,status from estacion";
         ps = con.prepareStatement(sql);
         rs = ps.executeQuery();
 
@@ -152,13 +152,13 @@ public class Administrarestaciones extends JFrame {
         
         jtProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title7"
+                "Title 1", "Title 2", "Title 3"
             }
         ));
         jtProductos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -190,7 +190,15 @@ public class Administrarestaciones extends JFrame {
         	@Override
         	public void mouseClicked(MouseEvent arg0) {
         		
-        		
+        		JDialog dialog= new Agregar_estacion();
+           	 dialog.addWindowListener(new WindowAdapter() {
+                    public void windowClosed(WindowEvent e) {
+                        actualizar();
+                    }
+                });
+                 //hago visible el dialogo
+                dialog.setVisible(true);
+                dialog.setLocationRelativeTo(null);
         		
 
         		
@@ -201,58 +209,6 @@ public class Administrarestaciones extends JFrame {
         button.setBounds(10, 6, 104, 23);
         panel.add(button);
         
-        button_1 = new JButton();
-        button_1.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent arg0) {
-        		int id=0;
-        		   PreparedStatement ps = null;
-        		   PreparedStatement ps2 = null;
-        	        try {
-
-        	            Conexion objCon = new Conexion();
-        	            Connection conn = (Connection) objCon.conexion();
-
-        	            int Fila = jtProductos.getSelectedRow();
-        	            String codigo = jtProductos.getValueAt(Fila, 2).toString();
-        	            
-        	            ps2 = conn.prepareStatement("Select id_turno from turno where nombre_turno=?");
-     	            	  ps2.setString(1, codigo);
-     	            	  ResultSet rs = ps2.executeQuery();
-     	            	
-     	            	  if(rs.next()) {
- 	                      id=rs.getInt("id_turno");
- 	                      }
-        	            
-        	             int respuesta= JOptionPane.showConfirmDialog(null, "Realmente quiere eliminar este cable?","Confirmacion de Eliminar", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-        	            if(respuesta==JOptionPane.YES_OPTION) {
-        	            	
-       	            	 
-      	            	
-        	            	 ps = conn.prepareStatement("DELETE FROM turno WHERE id_turno=?");
-        	                 ps.setInt(1, id);
-        	                 ps.execute();
-
-        	                 modelo.removeRow(Fila);
-        	                 JOptionPane.showMessageDialog(null, "Producto Eliminado");
-        	                // limpiar();
-        	            	
-        	            }
-
-        	           
-
-        	        } catch (SQLException ex) {
-        	            JOptionPane.showMessageDialog(null, "Error al Eliminar Producto");
-        	            System.out.println(ex.toString());
-        	        }
-        		
-        	}
-        });
-        button_1.setIcon(new ImageIcon(Administrarestaciones.class.getResource("/imagenes/elimin.png")));
-        button_1.setText("Eliminar");
-        button_1.setBounds(124, 6, 101, 23);
-        panel.add(button_1);
-        
         button_2 = new JButton("Modificar");
         button_2.setIcon(new ImageIcon(Administrarestaciones.class.getResource("/imagenes/edit.png")));
         button_2.addMouseListener(new MouseAdapter() {
@@ -260,10 +216,10 @@ public class Administrarestaciones extends JFrame {
         	public void mouseClicked(MouseEvent arg0) {
         		jtProductosMouseClicked(arg0);
         		
-        		
+        		  
         	}
         });
-        button_2.setBounds(235, 6, 111, 23);
+        button_2.setBounds(139, 6, 111, 23);
         panel.add(button_2);
 
        
@@ -279,8 +235,8 @@ public class Administrarestaciones extends JFrame {
         					.addPreferredGap(ComponentPlacement.RELATED)
         					.addComponent(textField, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE))
         				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 558, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 623, GroupLayout.PREFERRED_SIZE))
-        			.addContainerGap(873, Short.MAX_VALUE))
+        				.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 513, GroupLayout.PREFERRED_SIZE))
+        			.addContainerGap(938, Short.MAX_VALUE))
         );
         gl_f_1.setVerticalGroup(
         	gl_f_1.createParallelGroup(Alignment.LEADING)
@@ -304,61 +260,51 @@ public class Administrarestaciones extends JFrame {
     
     private void jtProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtProductosMouseClicked
     	
-        Modificar2 mod=new Modificar2();
+       
     	PreparedStatement ps = null;
         ResultSet rs = null;
+        String estado=null;
         try {
             Conexion objCon = new Conexion();
             Connection conn = (Connection) objCon.conexion();
 
             
-            
+           
             int Fila = jtProductos.getSelectedRow();
             String codigo = jtProductos.getValueAt(Fila, 0).toString();
-         
-
-            ps = conn.prepareStatement("Select hora_ini, hora_fin, nombre_turno from turno");
+            
+            ps = conn.prepareStatement("Select * from estacion where nombre_estacion=?");
             ps.setString(1, codigo);
             rs = ps.executeQuery();
-           
-
-
-            while (rs.next()) {
+            if(rs.next()) {
             	
-                mod.txtCodigo.setText(rs.getString("cf.id_final"));               
-                mod.txtColor.setText(rs.getString("cf.color"));
-                mod.txtLongitud.setText(rs.getString("cf.longitud"));
-                mod.txtDiametro.setText(rs.getString("cf.diametro"));
-                mod.txtCable1.setText(rs.getString("l1"));
-                mod.txtCable2.setText(rs.getString("l2"));
-                mod.txtOtro.setText(rs.getString("cf.otro_componente"));
-
-
-
-                
+                	
+               	 if(rs.getInt("status")==1) {
+                    	estado="Activa";
+                    }else if (rs.getInt("status")==0){
+                    	estado="Inactiva";
+                    }
+            	
             }
+             
+             Mod_estacion mod=new Mod_estacion(estado);
+             mod.txtNombre.setText(jtProductos.getValueAt(Fila, 0).toString());               
+             mod.txtDescripcion.setText(jtProductos.getValueAt(Fila, 1).toString());
+             
+             mod.setVisible(true);
+           	 mod.addWindowListener(new WindowAdapter() {
+                    public void windowClosed(WindowEvent e) {
+                        actualizar();
+                    }
+                });
+    		
+          
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
-        mod.addWindowListener(new WindowAdapter() {
-            public void windowClosed(WindowEvent e) {
-                actualizar();
-            }
-        });
-        mod.setVisible(true);
-       mod.setLocationRelativeTo(null);
     }//GEN-LAST:event_jtProductosMouseClicked
     
-   /* private void limpiar() {
-        txtCodigo.setText("");
-        txtColor.setText("");
-        txtlonguitud.setText("");
-        txtDiametro.setText("");
-        txtCable1.setText("");
-        txtCable2.setText("");
-        txtOtro.setText("");
-    }*/
-   
+  
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -409,7 +355,6 @@ public class Administrarestaciones extends JFrame {
     private JTextField textField;
     private JPanel panel;
     private JButton button;
-    private JButton button_1;
     private JButton button_2;
 
 }
