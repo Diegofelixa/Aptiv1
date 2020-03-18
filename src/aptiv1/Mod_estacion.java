@@ -3,6 +3,7 @@ package aptiv1;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -26,13 +27,16 @@ import java.sql.SQLException;
 
 public class Mod_estacion extends JDialog {
 
+	
 	private final JPanel contentPanel = new JPanel();
 	public JTextField txtDescripcion;
 	public JTextField txtNombre;
-	JTextField Nombreant;
 	private JLabel Nombreest;
 	private JLabel estado2;
 	public JLabel descripcion;
+	public JTextField txtide;
+	public JTextField txtestado;
+	String estadoac="";
 
 	/**
 	 * Launch the application.
@@ -43,9 +47,13 @@ public class Mod_estacion extends JDialog {
 
 	/**
 	 * Create the dialog.
+	 * @param rootPaneCheckingEnabled 
+	 * @param object 
 	 * @param estado2 
 	 */
-	public Mod_estacion(String estado) {
+	public Mod_estacion(Object statuss, boolean rootPaneCheckingEnabled) {
+		
+		
 		setBounds(100, 100, 334, 385);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -63,7 +71,10 @@ public class Mod_estacion extends JDialog {
 			descripcion.setBounds(29, 181, 130, 15);
 			contentPanel.add(descripcion);
 		
-		   
+			txtestado = new JTextField();
+			txtestado.setBounds(222, 49, 86, 20);
+			contentPanel.add(txtestado);
+			txtestado.setColumns(10);
 			
 			JLabel label_2;
 			estado2 = new JLabel();
@@ -72,27 +83,21 @@ public class Mod_estacion extends JDialog {
 			estado2.setBounds(91, 132, 59, 15);
 			contentPanel.add(estado2);
 		
+			
+			
+			
+			  
 		
-			JComboBox status = new JComboBox();
-			status.setBounds(150, 130, 107, 20);
-			status.addItem(estado);
-			if(estado=="Activa") {
-			status.addItem("Inactiva");	
-				
-			}else {
-			 status.addItem("Activa");
-			}
 			
+		
 			
-			
-			contentPanel.add(status);
 		
 		  
 			txtNombre = new JTextField();
 			txtNombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			txtNombre.setBounds(150, 82, 144, 21);
 			contentPanel.add(txtNombre);
-			Nombreant=txtNombre;
+			
 		
 			JLabel label_1;
 			Nombreest = new JLabel();
@@ -112,6 +117,29 @@ public class Mod_estacion extends JDialog {
 		lblModificar.setFont(new Font("Arial", Font.BOLD, 15));
 		lblModificar.setBounds(28, 11, 116, 28);
 		panel.add(lblModificar);
+		
+		txtide = new JTextField();
+		txtide.setBounds(209, 16, 86, 20);
+		panel.add(txtide);
+		txtide.setColumns(10);
+		 
+	       
+		JComboBox estat = new JComboBox();
+		estat.setBounds(150, 130, 144, 20);
+		estat.addItem(statuss);
+		if(statuss.equals("Inactiva")) {
+			estat.addItem("Activa");
+		}else {
+			estat.addItem("Inactiva");
+
+		}
+       
+		contentPanel.add(estat);
+		
+		
+		
+		
+		
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -135,29 +163,16 @@ public class Mod_estacion extends JDialog {
 				        	    Conexion objCon = new Conexion();
 						        Connection conn = (Connection) objCon.conexion();
 						        
+						       
 
-			            	 ps = conn.prepareStatement("SELECT id_estacion FROM estacion WHERE nombre_estacion = ?");
-			                 ps.setString(1,Nombreant.getText());
-			                 ResultSet rs = ps.executeQuery();
-			                
 			            
 
-
-			                if (rs.next()) { //Para leer varias posibles filas se cambia el while por el if
-			                    id = rs.getInt("id_estacion");
-                                     if(status.getSelectedItem().toString()=="Activa") {
-			        	         esta=1;
-			        	   
-                                     }else if(status.getSelectedItem().toString()=="Inactiva") {
-			        	        esta=0;
-                                     }
-			                }
 			                ps = conn.prepareStatement("UPDATE estacion SET nombre_estacion=?, descripcion=?, status=?  WHERE id_estacion=?");
 
 				            ps.setString(1, txtNombre.getText());
 				            ps.setString(2, txtDescripcion.getText());	
-				            ps.setInt(3, esta);				            
-				            ps.setLong(4,id);
+				            ps.setString(3, estat.getSelectedItem().toString());				            
+				            ps.setString(4,txtide.getText());
 				            
 				            
 				            ps.execute();
@@ -189,6 +204,7 @@ public class Mod_estacion extends JDialog {
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
+			
 		}
 	}
 }

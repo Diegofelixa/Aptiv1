@@ -302,7 +302,7 @@ public class Administracable extends javax.swing.JFrame {
             String codigo = jtProductos.getValueAt(Fila, 0).toString();
          
 
-            ps = conn.prepareStatement("SELECT leadcode, color, longuitud, Numero_hilos, calibre, aislante FROM cable WHERE leadcode=?");
+            ps = conn.prepareStatement("SELECT id_cable, leadcode, color, longuitud, Numero_hilos, calibre, aislante FROM cable WHERE leadcode=?");
             ps.setString(1, codigo);
             rs = ps.executeQuery();
            
@@ -310,6 +310,7 @@ public class Administracable extends javax.swing.JFrame {
 
             while (rs.next()) {
             	
+            	actualizar.txtid.setText(rs.getString("id_cable"));
                 actualizar.txtCodigo.setText(rs.getString("leadcode"));               
                 actualizar. txtColor.setText(rs.getString("color"));
                 actualizar. txtLongitud.setText(rs.getString("longuitud"));
@@ -405,11 +406,11 @@ public class Administracable extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
             	
-            	/*Administracable f=new Administracable();
+            	Administracable f=new Administracable();
             	//f.setExtendedState(MAXIMIZED_BOTH);
             	f.setSize(800,600);
             	f.setResizable(false);
-            	f.setVisible(true);*/
+            	f.setVisible(true);
             	
                
             }

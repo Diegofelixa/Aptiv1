@@ -157,6 +157,12 @@ public class Menu extends JFrame {
 		JButton btnEstaciones = new JButton("Estaciones");
 		btnEstaciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				 Adminestaciones tur= new Adminestaciones();
+		    	 tur.setVisible(true);
+		    	 tur.setSize(800,600);
+		    	 tur.setLocationRelativeTo(null);
+		    	 tur.setResizable(false);
+				
 			}
 		});
 		btnEstaciones.setBounds(185, 293, 186, 38);

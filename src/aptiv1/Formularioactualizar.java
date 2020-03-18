@@ -33,6 +33,7 @@ public class Formularioactualizar extends JDialog {
 	public JTextField txtNumero_hilos;
 	public JTextField txtCalibre;
 	public JTextField txtAislante;
+	public JTextField txtid;
 
 	/**
 	 * Launch the application.
@@ -63,6 +64,12 @@ public class Formularioactualizar extends JDialog {
 		lblRegistrar.setFont(new Font("Arial", Font.BOLD, 15));
 		lblRegistrar.setBounds(57, 11, 116, 28);
 		panel.add(lblRegistrar);
+		
+		txtid = new JTextField();
+		txtid.setBounds(243, 16, 25, 20);
+		panel.add(txtid);
+		//txtid.setVisible(false);
+		txtid.setColumns(10);
 		
 		JLabel label = new JLabel();
 		label.setForeground(new Color(0, 191, 255));
@@ -133,7 +140,7 @@ public class Formularioactualizar extends JDialog {
 					
 					
 					 
-				        int id=0;
+				       
 				        PreparedStatement ps = null;
 				        try {
 				        	
@@ -142,23 +149,7 @@ public class Formularioactualizar extends JDialog {
 				            
 				          
 
-				            // Java 7 try-with-resources
-				            try {
-
-				            	 ps = conn.prepareStatement("SELECT id_cable FROM cable WHERE leadcode = ?");
-				                 ps.setString(1,txtCodigo.getText());
-				                 ResultSet rs = ps.executeQuery();
-				                
-				            
-
-
-				                if (rs.next()) { //Para leer varias posibles filas se cambia el while por el if
-				                    id = rs.getInt("id_cable");
-				                }
-
-				            } catch (SQLException e) {
-				                JOptionPane.showMessageDialog(null, "SQLException:\n" + e.getMessage(), "Error: companiaNombreToInt()", JOptionPane.ERROR_MESSAGE);
-				            }
+				         
 				            ps = conn.prepareStatement("UPDATE cable SET leadcode=?, color=?, longuitud=?, numero_hilos=?, calibre=?, aislante=?  WHERE id_cable=?");
 
 				            ps.setString(1, txtCodigo.getText());
@@ -167,7 +158,7 @@ public class Formularioactualizar extends JDialog {
 				            ps.setString(4, txtNumero_hilos.getText());
 				            ps.setString(5, txtCalibre.getText());
 				            ps.setString(6, txtAislante.getText());
-				            ps.setLong(7,id);
+				            ps.setString(7,txtid.getText());
 				            
 				            
 				            ps.execute();
@@ -176,7 +167,7 @@ public class Formularioactualizar extends JDialog {
 				          
 
 				           // limpiar();
-				            id=0;				           
+				            				           
 							dispose();
 				           
 

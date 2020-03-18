@@ -131,7 +131,7 @@ public class Agregar_estacion extends JDialog {
 					            
 					            ps.setString(1, txtNombre.getText());
 					            ps.setString(2, txtDescripcion.getText());
-					            ps.setInt(3, estados );
+					            ps.setString(3, status.getSelectedItem().toString() );
 					           
 
 					            ps.execute();
