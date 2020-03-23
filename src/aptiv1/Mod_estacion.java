@@ -35,7 +35,6 @@ public class Mod_estacion extends JDialog {
 	private JLabel estado2;
 	public JLabel descripcion;
 	public JTextField txtide;
-	public JTextField txtestado;
 	String estadoac="";
 
 	/**
@@ -70,11 +69,6 @@ public class Mod_estacion extends JDialog {
 			descripcion.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			descripcion.setBounds(29, 181, 130, 15);
 			contentPanel.add(descripcion);
-		
-			txtestado = new JTextField();
-			txtestado.setBounds(222, 49, 86, 20);
-			contentPanel.add(txtestado);
-			txtestado.setColumns(10);
 			
 			JLabel label_2;
 			estado2 = new JLabel();
@@ -121,6 +115,7 @@ public class Mod_estacion extends JDialog {
 		txtide = new JTextField();
 		txtide.setBounds(209, 16, 86, 20);
 		panel.add(txtide);
+		txtide.setVisible(false);
 		txtide.setColumns(10);
 		 
 	       

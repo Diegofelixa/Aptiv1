@@ -309,6 +309,7 @@ public class Adminestaciones extends JFrame {
             	   
             	   estado=(rs.getString("status"));
          	       actualizar=new Mod_estacion(estado, rootPaneCheckingEnabled);
+         	       actualizar.txtide.setText(rs.getString("id_estacion"));
 
                }
               actualizar.txtNombre.setText(jtProductos.getValueAt(Fila, 0).toString());

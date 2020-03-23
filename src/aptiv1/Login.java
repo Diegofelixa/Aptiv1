@@ -128,7 +128,7 @@ public class Login  {
 				try{
 		            Conexion con = new Conexion();
 		            Connection c=(Connection) con.conexion();
-		           System.out.println(encriptadaconsha);
+		          // System.out.println(encriptadaconsha);
 		            if(txtusuario.getText().length()==0) {
 		               // JOptionPane.showMessageDialog(null, "");
 		            }else if(c!=null){
