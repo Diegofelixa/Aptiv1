@@ -8,5 +8,7 @@
 	<classpathentry kind="lib" path="C:/Users/ElGabino/Documents/Librerias/rs2xml.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ElGabino/Documents/Librerias/mysql-connector-java-5.0.8-bin.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ElGabino/Documents/Librerias/java-json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ElGabino/Documents/Librerias/Atxy2k.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ElGabino/Documents/Librerias/jcalendar-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

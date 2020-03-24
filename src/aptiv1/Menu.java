@@ -104,6 +104,12 @@ public class Menu extends JFrame {
 		JButton btnAdministrarPersonal = new JButton("Administrar Personal");
 		btnAdministrarPersonal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				Admin_Personal per=new Admin_Personal();
+				per.setSize(800,600);
+            	per.setLocationRelativeTo(null);
+            	per.setResizable(false);
+            	per.setVisible(true);
 			}
 		});
 		btnAdministrarPersonal.setBounds(185, 168, 186, 38);
