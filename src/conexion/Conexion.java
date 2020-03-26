@@ -13,7 +13,7 @@ public class Conexion {
 	    public Connection conexion(){
 	        try {
 	            Class.forName("com.mysql.jdbc.Driver");
-	            con=DriverManager.getConnection("jdbc:mysql://localhost/aptiv",user,password);
+	            con=DriverManager.getConnection("jdbc:mysql://localhost/aptiv1",user,password);
 	            //System.out.print("Conexion Establecida");
 	           //JOptionPane.showMessageDialog(null, "Conexion Establecida");
 	        } catch (ClassNotFoundException | SQLException e){

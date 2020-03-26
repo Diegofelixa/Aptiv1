@@ -132,18 +132,30 @@ public class Login  {
 		            if(txtusuario.getText().length()==0) {
 		               // JOptionPane.showMessageDialog(null, "");
 		            }else if(c!=null){
-		                PreparedStatement selec_pat =(PreparedStatement) c.prepareStatement("SELECT id_acceso FROM acceso where usuario ='"+txtusuario.getText()+"'AND contra='"+ 
+		                PreparedStatement selec_pat =(PreparedStatement) c.prepareStatement("SELECT id_acceso, privilegios FROM acceso where usuario ='"+txtusuario.getText()+"'AND contra='"+ 
 		               	encriptadaconsha+"';");
 		                ResultSet rs= selec_pat.executeQuery();
 		               
-		                if(rs.next()){		         
+		                if(rs.next()){		        
+		                	
+		                	if(rs.getInt("privilegios")== 1) {
+		                		
+		                		 String nombre=txtusuario.getText();
+		 		                 JFrame menu= new Menu(nombre);		                 
+		 		                 menu.setLocationRelativeTo(null);
+		 		                 menu.setResizable(false);
+		 		                 menu.setVisible(true);
+		 		                 frmLogin.setVisible(false);
+		                	} else if(rs.getInt("privilegios")== 2){
+		                		
+		                		 Produccion menu= new Produccion();		                 
+		 		                 menu.setLocationRelativeTo(null);
+		 		                 menu.setResizable(false);
+		 		                 menu.setVisible(true);
+		 		                 frmLogin.setVisible(false);
+		                	}
 		            
-		              String nombre=txtusuario.getText();
-		              JFrame menu= new Menu(nombre);		                 
-		                 menu.setLocationRelativeTo(null);
-		                 menu.setResizable(false);
-		                 menu.setVisible(true);
-		                 frmLogin.setVisible(false);
+		               
 	                   
 		               // JOptionPane.showMessageDialog(frame,contraencriptadamd5);
 		                //JOptionPane.showMessageDialog(frame,encriptadaconsha);

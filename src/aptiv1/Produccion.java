@@ -6,12 +6,25 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.mysql.jdbc.Connection;
+
+import conexion.Conexion;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.Color;
 import javax.swing.ImageIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Produccion extends JFrame {
 
@@ -31,7 +44,9 @@ public class Produccion extends JFrame {
 			public void run() {
 				try {
 					Produccion frame = new Produccion();
-					frame.setVisible(true);
+					 frame.setLocationRelativeTo(null);
+	                 frame.setResizable(false);
+	               	frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -112,8 +127,63 @@ public class Produccion extends JFrame {
 		txtcodigo.setColumns(10);
 		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				 PreparedStatement ps = null;
+			        try {
+			        	
+                        Date date = new Date();
+			        	
+			        	DateFormat hourdateFormat = new SimpleDateFormat(" yyyy/MM/dd HH:mm:ss");
+			        	//System.out.println("Hora y fecha: "+hourdateFormat.format(date));
+			            Conexion objCon = new Conexion();
+			            Connection conn = (Connection) objCon.conexion();
+			            ps = conn.prepareStatement("INSERT INTO produccion ( num_gafet, fk_estacion, cantidad_atados, hora_fecha, defectos, fk_turno, fk_final) VALUES (?,(select id_estacion from estacion where nombre_estacion='"+cb_estacion.getSelectedItem().toString() +"'),?,?,?,(select id_turno from turno where nombre_turno='"+cb_turno.getSelectedItem().toString() +"'),?)");
+			            
+			            ps.setString(1, txtgafete.getText());
+			            ps.setString(2, txtfinal.getText());
+			            ps.setString(3,hourdateFormat.format(date));
+			            ps.setString(4, txtdefectos.getText());
+			            ps.setString(5, txtcodigo.getText());
+			           
+
+			            ps.execute();
+
+			            JOptionPane.showMessageDialog(null, "Producto Guardado");
+			          
+			           
+			         	            
+
+			           
+
+			        } catch (SQLException ex) {
+			        	
+			            JOptionPane.showMessageDialog(null, "Error al Guardar Producto");
+			            System.out.println(ex);
+			        }
+				
+				
+				
+			}
+		});
 		btnAgregar.setIcon(new ImageIcon(Produccion.class.getResource("/imagenes/guadar.png")));
-		btnAgregar.setBounds(214, 397, 120, 29);
+		btnAgregar.setBounds(142, 395, 120, 29);
 		contentPane.add(btnAgregar);
+		
+		JButton btnConsultar = new JButton("Consultar");
+		btnConsultar.setIcon(new ImageIcon(Produccion.class.getResource("/imagenes/editar.png")));
+		btnConsultar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				Consult_produccion con= new Consult_produccion();
+				 con.setLocationRelativeTo(null);
+                 con.setResizable(false);
+               	con.setVisible(true);
+			}
+		});
+		btnConsultar.setBounds(292, 395, 135, 28);
+		contentPane.add(btnConsultar);
 	}
 }

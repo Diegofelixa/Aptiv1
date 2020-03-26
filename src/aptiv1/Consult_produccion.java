@@ -17,6 +17,14 @@ import javax.swing.table.TableRowSorter;
 import conexion.Conexion;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.Color;
+import javax.swing.ImageIcon;
 
 public class Consult_produccion extends JDialog {
 
@@ -25,6 +33,7 @@ public class Consult_produccion extends JDialog {
     DefaultTableModel modelo = new DefaultTableModel();
     TableRowSorter trs;
     private JTable jtProductos;
+    private JTextField textField;
  public Consult_produccion() {
     	
     	
@@ -39,7 +48,7 @@ public class Consult_produccion extends JDialog {
     	f_1.add(scrollPane);
     	
     	jtProductos = new JTable();
-    	scrollPane.setColumnHeaderView(jtProductos);
+    	scrollPane.setViewportView(jtProductos);
     	
     	
     	
@@ -48,26 +57,50 @@ public class Consult_produccion extends JDialog {
 
         try {
             jtProductos.setModel(modelo);
+            
+            textField = new JTextField();
+            textField.addKeyListener(new KeyAdapter() {
+            	@Override
+            	public void keyReleased(KeyEvent Ke) {
+            		
+            		trs.setRowFilter(RowFilter.regexFilter(textField.getText() ));
+            	}
+            });
+            trs=new TableRowSorter(modelo);
+            jtProductos.setRowSorter(trs);
+            textField.setColumns(10);
+            textField.setBounds(123, 50, 121, 20);
+            f_1.add(textField);
+            
+            JLabel label = new JLabel();
+            label.setIcon(new ImageIcon(Consult_produccion.class.getResource("/imagenes/busqueda.png")));
+            label.setText("Busqueda:");
+            label.setForeground(Color.WHITE);
+            label.setFont(new Font("Tahoma", Font.BOLD, 13));
+            label.setBounds(10, 47, 103, 24);
+            f_1.add(label);
             PreparedStatement ps = null;
             ResultSet rs = null;
             Conexion conn = new Conexion();
             java.sql.Connection con = conn.conexion();
 
-            String sql = "SELECT `leadcode` , `color` , `longuitud` , `numero_hilos` , `calibre` , `aislante` FROM `cable`";
+            String sql = "Select pr.num_gafet, pr.cantidad_atados, pr.hora_fecha, pr.defectos, e1.nombre_estacion AS 'l1', tur.nombre_turno AS 'l2', cf.id_final AS 'l3' from produccion pr inner join estacion e1 on e1.id_estacion=pr.fk_estacion inner join turno tur on tur.id_turno=pr.fk_turno inner join cable_fin cf on cf.id_final=pr.fk_final";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
 
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
             int cantidadColumnas = rsMd.getColumnCount();
 
-            modelo.addColumn("Código");
-            modelo.addColumn("Color");
-            modelo.addColumn("Longitud");
-            modelo.addColumn("Numero de Hilos");
-            modelo.addColumn("Calibre");
-            modelo.addColumn("Aislante");
+            modelo.addColumn("Numero de gafet");
+            modelo.addColumn("Cantidad de atados");
+            modelo.addColumn("Hora y fecha");
+            modelo.addColumn("Defectos");
+            modelo.addColumn("Estacion");
+            modelo.addColumn("Turno");
+            modelo.addColumn("Codigo del cable");
 
-            int[] anchos = {50, 200, 50, 100, 50, 50};
+
+            int[] anchos = {70, 100, 50, 100, 50, 50, 80};
             for (int i = 0; i < jtProductos.getColumnCount(); i++) {
                 jtProductos.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
             }
