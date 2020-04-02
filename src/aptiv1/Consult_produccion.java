@@ -1,15 +1,30 @@
- package aptiv1;
+package aptiv1;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -17,31 +32,32 @@ import javax.swing.table.TableRowSorter;
 import com.mysql.jdbc.Connection;
 
 import conexion.Conexion;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.RowFilter;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
-import java.awt.Font;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.Color;
-import javax.swing.ImageIcon;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+public class Consult_produccion extends JFrame {
 
-public class Consult_produccion extends JDialog {
+	private JPanel contentPane;
 
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
 	
-
-    DefaultTableModel modelo = new DefaultTableModel();
-    TableRowSorter trs;
-    private JTable jtProductos;
-    private JTextField textField;
-   public Consult_produccion(int privilegio) {
-    	
+	   DefaultTableModel modelo = new DefaultTableModel();
+	    TableRowSorter trs;
+	    private JTable jtProductos;
+	    private JTextField textField;
+	    
+    public Consult_produccion(int privilegio) {
     	
     	setBounds(100,100,757,464);
     	Fondo f_1= new Fondo();
@@ -87,7 +103,72 @@ public class Consult_produccion extends JDialog {
             label.setBounds(10, 47, 103, 24);
             f_1.add(label);
             
+            
+            
             JButton mod = new JButton("Modificar");
+            mod.addMouseListener(new MouseAdapter() {
+            	@Override
+            	public void mouseClicked(MouseEvent arg0) {
+            		String estacion = null ;
+            		int turno=0;
+            		int fin=0;
+            		Mod_produccion actualizar=new Mod_produccion(estacion, turno, fin);
+            	    	PreparedStatement ps = null;
+            	        ResultSet rs = null;
+            	       
+            	        try {
+            	            Conexion objCon = new Conexion();
+            	            Connection conn = (Connection) objCon.conexion();
+
+            	            
+            	            
+            	            int Fila = jtProductos.getSelectedRow();
+            	            String codigo = jtProductos.getValueAt(Fila, 0).toString();
+            	         
+
+            	            ps = conn.prepareStatement("SELECT id_produccion, num_gafet, fk_estacion, cantidad_atados, hora_fecha, defectos, fk_turno, fk_final FROM produccion WHERE num_gafet=?");
+            	            ps.setString(1, codigo);
+            	            rs = ps.executeQuery();
+            	           
+            	            if(rs.next()) {
+            	            	 estacion=jtProductos.getValueAt(Fila, 4).toString();
+            	            	 turno=rs.getInt("fk_turno");
+            	            	 fin=rs.getInt("fk_final");            	            	
+            	             	actualizar=new Mod_produccion(estacion, turno, fin);
+            	            }
+
+
+            	         
+            	                actualizar.txtid.setText(rs.getString("id_produccion"));
+            	            	actualizar.txtGafete.setText(jtProductos.getValueAt(Fila, 0).toString());
+            	            	actualizar. txtcantidad.setText(jtProductos.getValueAt(Fila, 1).toString());
+            	            	actualizar. txtdefectos.setText(jtProductos.getValueAt(Fila, 3).toString());
+            	            	actualizar.txtcodigo.setText(jtProductos.getValueAt(Fila, 6).toString());            
+            	             
+            	                
+            	               
+            	             
+            	                
+            	            
+            	               
+            	        } catch (SQLException ex) {
+            	            System.out.println(ex.toString());
+            	        }
+            	        actualizar.addWindowListener(new WindowAdapter() {
+            	            public void windowClosed(WindowEvent e) {
+            	                actualizar();
+            	            }
+            	        });
+            	        actualizar.setVisible(true);
+            	       actualizar.setLocationRelativeTo(null);
+
+            	        
+            	    }
+            		
+            	           		
+            		
+            	
+            });
             mod.setIcon(new ImageIcon(Consult_produccion.class.getResource("/imagenes/edit.png")));
             mod.setBounds(554, 48, 115, 23);
             f_1.add(mod);
@@ -138,7 +219,7 @@ public class Consult_produccion extends JDialog {
             Conexion conn = new Conexion();
             java.sql.Connection con = conn.conexion();
 
-            if(privilegio==2) {
+            if(privilegio==3) {
             	elim.setVisible(false);
             	mod.setVisible(false);
             }
@@ -179,5 +260,33 @@ public class Consult_produccion extends JDialog {
        
      
 
+    } public void  actualizar() {
+    	modelo.setRowCount(0);
+    try {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Conexion conn = new Conexion();
+        java.sql.Connection con = conn.conexion();
+
+        String sql = "Select pr.num_gafet, pr.cantidad_atados, pr.hora_fecha, pr.defectos, e1.nombre_estacion AS 'l1', tur.nombre_turno AS 'l2', cf.id_final AS 'l3' from produccion pr inner join estacion e1 on e1.id_estacion=pr.fk_estacion inner join turno tur on tur.id_turno=pr.fk_turno inner join cable_fin cf on cf.id_final=pr.fk_final";
+        ps = con.prepareStatement(sql);
+        rs = ps.executeQuery();
+
+        ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
+        int cantidadColumnas = rsMd.getColumnCount();
+
+        while (rs.next()) {
+            Object[] filas = new Object[cantidadColumnas];
+            for (int i = 0; i < cantidadColumnas; i++) {
+                filas[i] = rs.getObject(i + 1);
+            }
+            modelo.addRow(filas);
+        }
+
+    } catch (SQLException ex) {
+        System.err.println(ex.toString());
+    }
+   
+    	
     }
 }

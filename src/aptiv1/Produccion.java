@@ -62,11 +62,11 @@ public class Produccion extends JFrame {
 		
 		JLabel lblGafete = new JLabel("# Gafete");
 		lblGafete.setForeground(Color.WHITE);
-		lblGafete.setBounds(29, 86, 63, 14);
+		lblGafete.setBounds(30, 86, 63, 14);
 		contentPane.add(lblGafete);
 		
 		txtgafete = new JTextField();
-		txtgafete.setBounds(91, 83, 143, 21);
+		txtgafete.setBounds(92, 83, 143, 21);
 		RestrictedTextField restricted = new RestrictedTextField(txtgafete);
 		//restricted.setOnlyNums(true);
 		restricted.setLimit(8);
@@ -75,13 +75,13 @@ public class Produccion extends JFrame {
 		
 		JLabel lblEstacion = new JLabel("Estacion:");
 		lblEstacion.setForeground(Color.WHITE);
-		lblEstacion.setBounds(29, 128, 63, 14);
+		lblEstacion.setBounds(30, 128, 63, 14);
 		contentPane.add(lblEstacion);
 		
 		
 		JComboBox cb_estacion = new JComboBox();
 		combo.consultar_estacion(cb_estacion);
-		cb_estacion.setBounds(101, 125, 133, 21);
+		cb_estacion.setBounds(102, 125, 133, 21);
 		contentPane.add(cb_estacion);
 		
 		JLabel lblProduccionFinal = new JLabel("Cantidad Producida");
@@ -99,11 +99,11 @@ public class Produccion extends JFrame {
 		
 		JLabel lblDefectosOComentarios = new JLabel("Defectos o Comentarios");
 		lblDefectosOComentarios.setForeground(Color.WHITE);
-		lblDefectosOComentarios.setBounds(41, 258, 152, 14);
+		lblDefectosOComentarios.setBounds(42, 258, 152, 14);
 		contentPane.add(lblDefectosOComentarios);
 		
 		txtdefectos = new JTextField();
-		txtdefectos.setBounds(203, 203, 204, 125);
+		txtdefectos.setBounds(204, 203, 204, 125);
 		 restricted = new RestrictedTextField(txtdefectos);
 			restricted.setOnlyText(true);
 			restricted.setLimit(50);
@@ -117,16 +117,16 @@ public class Produccion extends JFrame {
 		
 		JComboBox cb_turno = new JComboBox();
 		combo.consultar_turno(cb_turno);
-		cb_turno.setBounds(360, 76, 115, 24);
+		cb_turno.setBounds(361, 76, 115, 24);
 		contentPane.add(cb_turno);
 		
 		JLabel lblCodigoCable = new JLabel("Codigo cable");
 		lblCodigoCable.setForeground(Color.WHITE);
-		lblCodigoCable.setBounds(9, 171, 83, 21);
+		lblCodigoCable.setBounds(10, 171, 83, 21);
 		contentPane.add(lblCodigoCable);
 		
 		txtcodigo = new JTextField();
-		txtcodigo.setBounds(101, 171, 133, 21);
+		txtcodigo.setBounds(102, 171, 133, 21);
 		contentPane.add(txtcodigo);
 		 restricted = new RestrictedTextField(txtcodigo);
 			//restricted.setOnlyNums(true);
