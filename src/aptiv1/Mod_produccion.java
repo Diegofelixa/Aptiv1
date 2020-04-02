@@ -141,6 +141,7 @@ public class Mod_produccion extends JDialog {
 		txtid = new JTextField();
 		txtid.setBounds(148, 55, 20, 21);
 		contentPanel.add(txtid);
+		txtid.setVisible(false);
 		txtid.setColumns(10);
 		{
 			JPanel buttonPane = new JPanel();
