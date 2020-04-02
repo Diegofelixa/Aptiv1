@@ -7,9 +7,18 @@ import java.awt.Image;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+
+import conexion.Conexion;
+
 import javax.swing.JLabel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
@@ -20,6 +29,8 @@ import java.awt.SystemColor;
 import javax.swing.JMenuBar;
 import javax.swing.SwingConstants;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 
 public class Menu extends JFrame {
@@ -36,16 +47,19 @@ public class Menu extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+			
 				
 			}
 		});
 	}
 
+	
 	/**
 	 * Create the frame.
 	 * @param nombre 
+	 * @throws SQLException 
 	 */
-	public Menu(String nombre) {
+	public Menu(String nombre) throws SQLException {
 		getComponents();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -173,15 +187,28 @@ public class Menu extends JFrame {
 		});
 		btnEstaciones.setBounds(185, 293, 186, 38);
 		contentPane.add(btnEstaciones);
-	
+		String usua="";
+		if (nombre!=null) {
+			Conexion con = new Conexion();
+	        Connection c=(Connection) con.conexion();
+			PreparedStatement selec_pat2 =(PreparedStatement)
+		    c.prepareStatement("select nombre from operador where fk_acceso=(select id_acceso from acceso where usuario="+nombre+")");
+			ResultSet rs2= selec_pat2.executeQuery();
+			if(rs2.next()) {
+			 usua = rs2.getString("nombre");
+			}
+		}
 		
-		JLabel label = new JLabel();
+        JLabel label = new JLabel();
 		label.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		label.setText(nombre);
+		label.setText(usua);
 		label.setForeground(Color.WHITE);
 		label.setBounds(440, 5, 80, 20);
 		contentPane.add(label);
 		
+       
+		
+	
 		
 		
 		

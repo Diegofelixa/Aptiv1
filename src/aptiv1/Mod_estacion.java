@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.mysql.jdbc.Connection;
 
+import Atxy2k.CustomTextField.RestrictedTextField;
 import conexion.Conexion;
 
 import javax.swing.JTextField;
@@ -61,6 +62,9 @@ public class Mod_estacion extends JDialog {
 					txtDescripcion = new JTextField();
 			txtDescripcion.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			txtDescripcion.setBounds(121, 164, 173, 73);
+			RestrictedTextField restricted = new RestrictedTextField(txtDescripcion);
+				restricted.setOnlyText(true);
+				restricted.setLimit(50);
 			contentPanel.add(txtDescripcion);
 		
 			JLabel label;
@@ -90,6 +94,9 @@ public class Mod_estacion extends JDialog {
 			txtNombre = new JTextField();
 			txtNombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			txtNombre.setBounds(150, 82, 144, 21);
+			restricted = new RestrictedTextField(txtNombre);
+			restricted.setOnlyText(true);
+			restricted.setLimit(20);
 			contentPanel.add(txtNombre);
 			
 		

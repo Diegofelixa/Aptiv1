@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
-
+import Atxy2k.CustomTextField.RestrictedTextField;
 import conexion.Conexion;
 //import controlador.Menu;
 
@@ -89,6 +89,8 @@ public class Login  {
 		frmLogin.setContentPane(fondo);
 		frmLogin.getContentPane().setLayout(null);
 		
+			
+		
 		JLabel lblUsuario = new JLabel("USUARIO:");
 		lblUsuario.setForeground(new Color(255, 69, 0));
 		lblUsuario.setBounds(44, 180, 82, 25);
@@ -103,11 +105,17 @@ public class Login  {
 		
 		txtusuario = new JTextField();
 		txtusuario.setBounds(151, 179, 146, 30);
+		RestrictedTextField restricted = new RestrictedTextField(txtusuario);
+		restricted.setOnlyNums(true);
+		restricted.setLimit(8);
 		frmLogin.getContentPane().add(txtusuario);
 		txtusuario.setColumns(10);
 		
 		passwordField = new JPasswordField();
 		passwordField.setBounds(151, 216, 146, 29);
+		 restricted = new RestrictedTextField(passwordField);
+		//restricted.setOnlyNums(true);
+		restricted.setLimit(8);
 		frmLogin.getContentPane().add(passwordField);
 		
       	
@@ -125,10 +133,11 @@ public class Login  {
 		btnIniciarSecion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				
 				try{
 		            Conexion con = new Conexion();
 		            Connection c=(Connection) con.conexion();
-		          // System.out.println(encriptadaconsha);
+		            //System.out.println(encriptadaconsha);
 		            if(txtusuario.getText().length()==0) {
 		               // JOptionPane.showMessageDialog(null, "");
 		            }else if(c!=null){
@@ -140,19 +149,31 @@ public class Login  {
 		                	
 		                	if(rs.getInt("privilegios")== 1) {
 		                		
-		                		 String nombre=txtusuario.getText();
-		 		                 JFrame menu= new Menu(nombre);		                 
+		                		String nombre=txtusuario.getText();
+		 		                 Menu menu=new Menu(nombre);                 
 		 		                 menu.setLocationRelativeTo(null);
 		 		                 menu.setResizable(false);
 		 		                 menu.setVisible(true);
 		 		                 frmLogin.setVisible(false);
-		                	} else if(rs.getInt("privilegios")== 2){
+		 		                 rs.next();
+		                	} else if(rs.getInt("privilegios")== 3 ){
 		                		
-		                		 Produccion menu= new Produccion();		                 
+		                		int privilegio=rs.getInt("privilegios");
+		                		 Produccion menu= new Produccion(privilegio);		                 
 		 		                 menu.setLocationRelativeTo(null);
 		 		                 menu.setResizable(false);
 		 		                 menu.setVisible(true);
 		 		                 frmLogin.setVisible(false);
+		 		                rs.next();
+		                	} else if(rs.getInt("privilegios")== 2 ){
+		                		
+		                		int privilegio=rs.getInt("privilegios");
+		                		 Consult_produccion menu= new Consult_produccion(privilegio);		                 
+		 		                 menu.setLocationRelativeTo(null);
+		 		                 menu.setResizable(false);
+		 		                 menu.setVisible(true);
+		 		                 frmLogin.setVisible(false);
+		 		                rs.next();
 		                	}
 		            
 		               
@@ -173,17 +194,11 @@ public class Login  {
 		        JOptionPane.showMessageDialog(null,e1.getMessage());
 	        }
 				
+				
 			}
 		});
 		frmLogin.getContentPane().add(btnIniciarSecion);
 		
-		JLabel label = new JLabel("");
-		label.setBounds(44, 11, 254, 91);
-		label.setIcon(new ImageIcon("C:\\Users\\ElGabino\\Pictures\\aptiv_logo_color_rgb.png"));
-		ImageIcon foto1 = new ImageIcon("C:\\Users\\ElGabino\\Pictures\\aptiv_logo_color_rgb.png");
-		ImageIcon icono_linea1 = new ImageIcon(foto1.getImage().getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_DEFAULT));
-		label.setIcon(icono_linea1);
-		frmLogin.getContentPane().add(label);
 		
 		JLabel lblBienvenido = new JLabel("BIENVENIDO");
 		lblBienvenido.setForeground(Color.BLACK);
@@ -192,7 +207,14 @@ public class Login  {
 		lblBienvenido.setFont(new Font("Arial", Font.PLAIN, 20));
 		frmLogin.getContentPane().add(lblBienvenido);
 		
+		JLabel logo = new JLabel();
+		logo.setBounds(72, 11, 202, 66);
+		logo.setIcon(new ImageIcon(Login.class.getResource("/imagenes/logo.png")));	
+		ImageIcon foto2 = new ImageIcon("/imagenes/logo.png");
+		ImageIcon icono_linea2 = new ImageIcon(foto2.getImage().getScaledInstance(logo.getWidth(), logo.getHeight(), Image.SCALE_DEFAULT));
+		logo.setIcon(icono_linea2);
+		fondo.add(logo);
+		logo.repaint();
 		
 	}
-	
 }

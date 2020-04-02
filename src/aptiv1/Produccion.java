@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.mysql.jdbc.Connection;
 
+import Atxy2k.CustomTextField.RestrictedTextField;
 import conexion.Conexion;
 
 import javax.swing.JLabel;
@@ -42,22 +43,16 @@ public class Produccion extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					Produccion frame = new Produccion();
-					 frame.setLocationRelativeTo(null);
-	                 frame.setResizable(false);
-	               	frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				
 			}
 		});
 	}
 
 	/**
 	 * Create the frame.
+	 * @param privilegio 
 	 */
-	public Produccion() {
+	public Produccion(int privilegio) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 573, 495);
 		contentPane = new Fondo();
@@ -72,7 +67,10 @@ public class Produccion extends JFrame {
 		
 		txtgafete = new JTextField();
 		txtgafete.setBounds(91, 83, 143, 21);
-		contentPane.add(txtgafete);
+		RestrictedTextField restricted = new RestrictedTextField(txtgafete);
+		//restricted.setOnlyNums(true);
+		restricted.setLimit(8);
+		contentPane.add(txtgafete);		
 		txtgafete.setColumns(10);
 		
 		JLabel lblEstacion = new JLabel("Estacion:");
@@ -93,6 +91,9 @@ public class Produccion extends JFrame {
 		
 		txtfinal = new JTextField();
 		txtfinal.setBounds(423, 125, 75, 20);
+		 restricted = new RestrictedTextField(txtfinal);
+		restricted.setOnlyNums(true);
+		restricted.setLimit(5);
 		contentPane.add(txtfinal);
 		txtfinal.setColumns(10);
 		
@@ -103,6 +104,9 @@ public class Produccion extends JFrame {
 		
 		txtdefectos = new JTextField();
 		txtdefectos.setBounds(203, 203, 204, 125);
+		 restricted = new RestrictedTextField(txtdefectos);
+			restricted.setOnlyText(true);
+			restricted.setLimit(50);
 		contentPane.add(txtdefectos);
 		txtdefectos.setColumns(10);
 		
@@ -124,6 +128,9 @@ public class Produccion extends JFrame {
 		txtcodigo = new JTextField();
 		txtcodigo.setBounds(101, 171, 133, 21);
 		contentPane.add(txtcodigo);
+		 restricted = new RestrictedTextField(txtcodigo);
+			//restricted.setOnlyNums(true);
+			restricted.setLimit(8);
 		txtcodigo.setColumns(10);
 		
 		JButton btnAgregar = new JButton("Agregar");
@@ -177,7 +184,7 @@ public class Produccion extends JFrame {
 		btnConsultar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				Consult_produccion con= new Consult_produccion();
+				Consult_produccion con= new Consult_produccion(privilegio);
 				 con.setLocationRelativeTo(null);
                  con.setResizable(false);
                	con.setVisible(true);

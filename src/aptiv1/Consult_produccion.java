@@ -1,4 +1,4 @@
-package aptiv1;
+ package aptiv1;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -14,17 +14,23 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import com.mysql.jdbc.Connection;
+
 import conexion.Conexion;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
 import javax.swing.ImageIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Consult_produccion extends JDialog {
 
@@ -34,7 +40,7 @@ public class Consult_produccion extends JDialog {
     TableRowSorter trs;
     private JTable jtProductos;
     private JTextField textField;
- public Consult_produccion() {
+   public Consult_produccion(int privilegio) {
     	
     	
     	setBounds(100,100,757,464);
@@ -55,6 +61,7 @@ public class Consult_produccion extends JDialog {
         getComponents();
         
 
+        
         try {
             jtProductos.setModel(modelo);
             
@@ -79,11 +86,63 @@ public class Consult_produccion extends JDialog {
             label.setFont(new Font("Tahoma", Font.BOLD, 13));
             label.setBounds(10, 47, 103, 24);
             f_1.add(label);
+            
+            JButton mod = new JButton("Modificar");
+            mod.setIcon(new ImageIcon(Consult_produccion.class.getResource("/imagenes/edit.png")));
+            mod.setBounds(554, 48, 115, 23);
+            f_1.add(mod);
+            
+            JButton elim = new JButton();
+            elim.addMouseListener(new MouseAdapter() {
+            	@Override
+            	public void mouseClicked(MouseEvent arg0) {
+            		
+            		
+            		  PreparedStatement ps = null;
+            	        try {
+
+            	            Conexion objCon = new Conexion();
+            	            Connection conn = (Connection) objCon.conexion();
+
+            	            int Fila = jtProductos.getSelectedRow();
+            	            String codigo = jtProductos.getValueAt(Fila, 0).toString();
+
+            	            
+            	            int respuesta= JOptionPane.showConfirmDialog(null, "Realmente quiere eliminar este cable?","Confirmacion de Eliminar", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+            	            if(respuesta==JOptionPane.YES_OPTION) {
+            	            	 ps = conn.prepareStatement("DELETE FROM produccion WHERE id_produccion=?");
+            	                 ps.setString(1, codigo);
+            	                 ps.execute();
+
+            	                 modelo.removeRow(Fila);
+            	                 JOptionPane.showMessageDialog(null, "Producto Eliminado");
+            	                // limpiar();
+            	            	
+            	            }
+            	           
+
+            	        } catch (SQLException ex) {
+            	            JOptionPane.showMessageDialog(null, "Error al Eliminar Producto");
+            	            System.out.println(ex.toString());
+            	        }
+            		
+            		
+            	}
+            });
+            elim.setIcon(new ImageIcon(Consult_produccion.class.getResource("/imagenes/elimin.png")));
+            elim.setText("Eliminar");
+            elim.setBounds(443, 48, 101, 23);
+            f_1.add(elim);
             PreparedStatement ps = null;
             ResultSet rs = null;
             Conexion conn = new Conexion();
             java.sql.Connection con = conn.conexion();
 
+            if(privilegio==2) {
+            	elim.setVisible(false);
+            	mod.setVisible(false);
+            }
+            
             String sql = "Select pr.num_gafet, pr.cantidad_atados, pr.hora_fecha, pr.defectos, e1.nombre_estacion AS 'l1', tur.nombre_turno AS 'l2', cf.id_final AS 'l3' from produccion pr inner join estacion e1 on e1.id_estacion=pr.fk_estacion inner join turno tur on tur.id_turno=pr.fk_turno inner join cable_fin cf on cf.id_final=pr.fk_final";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();

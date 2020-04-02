@@ -3,12 +3,12 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/ElGabino/Documents/mysql-connector-java-5.1.45/mysql-connector-java-5.1.45-bin.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ElGabino/Documents/Librerias/commons-codec-1.14/commons-codec-1.14.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ElGabino/Documents/Librerias/rs2xml.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ElGabino/Documents/Librerias/mysql-connector-java-5.0.8-bin.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ElGabino/Documents/Librerias/java-json.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ElGabino/Documents/Librerias/Atxy2k.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ElGabino/Documents/Librerias/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="src/librerias/Atxy2k.jar"/>
+	<classpathentry kind="lib" path="src/librerias/commons-codec-1.14.jar"/>
+	<classpathentry kind="lib" path="src/librerias/java-json.jar"/>
+	<classpathentry kind="lib" path="src/librerias/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="src/librerias/mysql-connector-java-5.0.8-bin.jar"/>
+	<classpathentry kind="lib" path="src/librerias/mysql-connector-java-5.1.45-bin.jar"/>
+	<classpathentry kind="lib" path="src/librerias/rs2xml.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

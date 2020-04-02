@@ -20,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.mysql.jdbc.Connection;
 
+import Atxy2k.CustomTextField.RestrictedTextField;
 import conexion.Conexion;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -68,7 +69,7 @@ public class Formularioactualizar extends JDialog {
 		txtid = new JTextField();
 		txtid.setBounds(243, 16, 25, 20);
 		panel.add(txtid);
-		//txtid.setVisible(false);
+		txtid.setVisible(false);
 		txtid.setColumns(10);
 		
 		JLabel label = new JLabel();
@@ -207,31 +208,45 @@ public class Formularioactualizar extends JDialog {
 		txtCodigo = new JTextField();
 		txtCodigo.setBounds(127, 77, 111, 20);
 		contentPanel.add(txtCodigo);
+		RestrictedTextField restricted = new RestrictedTextField(txtCodigo);
+		//restricted.setOnlyNums(true);
+		restricted.setLimit(8);
 		txtCodigo.setColumns(10);
 		
 		txtColor = new JTextField();
 		txtColor.setColumns(10);
 		txtColor.setBounds(127, 114, 111, 20);
+		
 		contentPanel.add(txtColor);
 		
 		txtLongitud = new JTextField();
 		txtLongitud.setColumns(10);
 		txtLongitud.setBounds(127, 158, 111, 20);
+		 restricted = new RestrictedTextField(txtLongitud);
+			restricted.setOnlyNums(true);
+			restricted.setLimit(17);
 		contentPanel.add(txtLongitud);
 		
 		txtNumero_hilos = new JTextField();
 		txtNumero_hilos.setColumns(10);
 		txtNumero_hilos.setBounds(127, 187, 111, 20);
+		 restricted = new RestrictedTextField(txtNumero_hilos);
+			restricted.setOnlyNums(true);
+			restricted.setLimit(4);
 		contentPanel.add(txtNumero_hilos);
 		
 		txtCalibre = new JTextField();
 		txtCalibre.setColumns(10);
 		txtCalibre.setBounds(127, 219, 111, 20);
+		 restricted = new RestrictedTextField(txtCalibre);
+			restricted.setOnlyNums(true);
+			restricted.setLimit(4);
 		contentPanel.add(txtCalibre);
 		
 		txtAislante = new JTextField();
 		txtAislante.setColumns(10);
 		txtAislante.setBounds(127, 259, 111, 20);
+		
 		contentPanel.add(txtAislante);
 	}
 }

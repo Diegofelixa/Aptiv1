@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.mysql.jdbc.Connection;
 
+import Atxy2k.CustomTextField.RestrictedTextField;
 import conexion.Conexion;
 
 import javax.swing.JTextField;
@@ -185,12 +186,13 @@ public class Modificar2 extends JDialog {
 			{
 				txtOtro = new JTextField();
 				txtOtro.setColumns(10);
-				txtOtro.setBounds(169, 285, 140, 20);
+				txtOtro.setBounds(157, 257, 140, 20);
+				
 				panel.add(txtOtro);
 			}
 			{
 				JLabel label = new JLabel("Otro Componente");
-				label.setBounds(44, 288, 86, 14);
+				label.setBounds(32, 260, 86, 14);
 				panel.add(label);
 			}
 			{
@@ -198,78 +200,77 @@ public class Modificar2 extends JDialog {
 				label.setText("Cable 2");
 				label.setForeground(Color.BLACK);
 				label.setFont(new Font("Tahoma", Font.PLAIN, 13));
-				label.setBounds(46, 258, 47, 15);
+				label.setBounds(34, 230, 47, 15);
 				panel.add(label);
 			}
 			{
 				txtCable2 = new JTextField();
 				txtCable2.setFont(new Font("Tahoma", Font.PLAIN, 12));
-				txtCable2.setBounds(159, 255, 150, 21);
+				txtCable2.setBounds(147, 227, 150, 21);
+				
 				panel.add(txtCable2);
 			}
 			{
 				txtCable1 = new JTextField();
 				txtCable1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-				txtCable1.setBounds(159, 223, 150, 21);
+				txtCable1.setBounds(147, 195, 150, 21);
+				
 				panel.add(txtCable1);
 			}
 			{
 				JLabel label = new JLabel();
 				label.setText("Cable 1");
 				label.setFont(new Font("Tahoma", Font.PLAIN, 12));
-				label.setBounds(44, 226, 49, 15);
+				label.setBounds(32, 198, 49, 15);
 				panel.add(label);
 			}
 			{
 				JLabel label = new JLabel();
 				label.setText("Diametro");
 				label.setFont(new Font("Tahoma", Font.PLAIN, 12));
-				label.setBounds(44, 194, 49, 15);
+				label.setBounds(32, 166, 49, 15);
 				panel.add(label);
 			}
 			{
 				txtDiametro = new JTextField();
 				txtDiametro.setFont(new Font("Tahoma", Font.PLAIN, 12));
-				txtDiametro.setBounds(168, 191, 141, 21);
+				txtDiametro.setBounds(156, 163, 141, 21);
+				
 				panel.add(txtDiametro);
 			}
 			{
 				txtLongitud = new JTextField();
 				txtLongitud.setFont(new Font("Tahoma", Font.PLAIN, 12));
-				txtLongitud.setBounds(159, 159, 150, 21);
+				txtLongitud.setBounds(147, 131, 150, 21);
+				
 				panel.add(txtLongitud);
 			}
 			{
 				JLabel label = new JLabel();
 				label.setText("Longitud");
 				label.setFont(new Font("Tahoma", Font.PLAIN, 12));
-				label.setBounds(45, 165, 48, 15);
+				label.setBounds(33, 137, 48, 15);
 				panel.add(label);
 			}
 			{
 				txtColor = new JTextField();
 				txtColor.setFont(new Font("Tahoma", Font.PLAIN, 12));
-				txtColor.setBounds(159, 118, 150, 21);
+				txtColor.setBounds(147, 90, 150, 21);
+				
 				panel.add(txtColor);
 			}
 			{
 				JLabel label = new JLabel();
 				label.setText("Color");
 				label.setFont(new Font("Tahoma", Font.PLAIN, 12));
-				label.setBounds(56, 121, 27, 15);
-				panel.add(label);
-			}
-			{
-				JLabel label = new JLabel();
-				label.setText("C\u00F3digo");
-				label.setFont(new Font("Tahoma", Font.PLAIN, 12));
-				label.setBounds(46, 84, 37, 15);
+				label.setBounds(44, 93, 27, 15);
 				panel.add(label);
 			}
 			{
 				txtCodigo = new JTextField();
 				txtCodigo.setFont(new Font("Tahoma", Font.PLAIN, 12));
-				txtCodigo.setBounds(159, 78, 150, 21);
+				txtCodigo.setBounds(159, 50, 150, 21);
+				txtCodigo.setVisible(false);
 				panel.add(txtCodigo);
 			}
 			{
@@ -309,13 +310,18 @@ public class Modificar2 extends JDialog {
 				            ps2 = conn.prepareStatement("SELECT id_cable FROM cable WHERE leadcode = ?");
 				            ps2.setString(1,txtCable2.getText());
 				            ResultSet rs = ps.executeQuery();
-				           
+				            ResultSet rs2 = ps2.executeQuery();
+
 				       
 
 
 				           if (rs.next()) { //Para leer varias posibles filas se cambia el while por el if
 				               idcable1 = rs.getInt("id_cable");
-				               idcable2 = rs.getInt("id_cable");
+				              
+				           }
+				           if (rs2.next()) { //Para leer varias posibles filas se cambia el while por el if
+				              
+				               idcable2 = rs2.getInt("id_cable");
 				           }
 				       	
 				          

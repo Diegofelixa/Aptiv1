@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.mysql.jdbc.Connection;
 
+import Atxy2k.CustomTextField.RestrictedTextField;
 import conexion.Conexion;
 
 import javax.swing.JTextField;
@@ -57,6 +58,10 @@ public class Formulario2 extends JDialog {
 		txtOtro = new JTextField();
 		txtOtro.setColumns(10);
 		txtOtro.setBounds(169, 285, 140, 20);
+		RestrictedTextField restricted = new RestrictedTextField(txtOtro);
+			restricted.setOnlyText(true);
+			restricted.setLimit(15);
+
 		contentPanel.add(txtOtro);
 		
 		JLabel label = new JLabel("Otro Componente");
@@ -73,11 +78,17 @@ public class Formulario2 extends JDialog {
 		txtCable2 = new JTextField();
 		txtCable2.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtCable2.setBounds(159, 255, 150, 21);
+		 restricted = new RestrictedTextField(txtCable2);
+			//restricted.setOnlyNums(true);
+			restricted.setLimit(8);
 		contentPanel.add(txtCable2);
 		
 		txtCable1 = new JTextField();
 		txtCable1.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtCable1.setBounds(159, 223, 150, 21);
+		 restricted = new RestrictedTextField(txtCable1);
+			//restricted.setOnlyNums(true);
+			restricted.setLimit(8);
 		contentPanel.add(txtCable1);
 		
 		JLabel label_2 = new JLabel();
@@ -95,22 +106,32 @@ public class Formulario2 extends JDialog {
 		txtDiametro = new JTextField();
 		txtDiametro.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtDiametro.setBounds(168, 191, 141, 21);
+		 restricted = new RestrictedTextField(txtDiametro);
+			restricted.setOnlyNums(true);
+			restricted.setLimit(4);
 		contentPanel.add(txtDiametro);
 		
 		txtLongitud = new JTextField();
 		txtLongitud.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtLongitud.setBounds(159, 159, 150, 21);
+		 restricted = new RestrictedTextField(txtLongitud);
+			restricted.setOnlyNums(true);
+			restricted.setLimit(4);
 		contentPanel.add(txtLongitud);
 		
 		JLabel label_4 = new JLabel();
 		label_4.setText("Longitud");
 		label_4.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		label_4.setBounds(45, 165, 48, 15);
+		
 		contentPanel.add(label_4);
 		
 		txtColor = new JTextField();
 		txtColor.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtColor.setBounds(159, 118, 150, 21);
+		 restricted = new RestrictedTextField(txtColor);
+		restricted.setOnlyText(true);
+		restricted.setLimit(17);
 		contentPanel.add(txtColor);
 		
 		JLabel label_5 = new JLabel();
@@ -128,6 +149,9 @@ public class Formulario2 extends JDialog {
 		txtCodigo = new JTextField();
 		txtCodigo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtCodigo.setBounds(159, 78, 150, 21);
+		 restricted = new RestrictedTextField(txtCodigo);
+			//restricted.setOnlyNums(true);
+			restricted.setLimit(8);
 		contentPanel.add(txtCodigo);
 		
 		JPanel panel = new JPanel();

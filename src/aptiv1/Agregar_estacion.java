@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.mysql.jdbc.Connection;
 
+import Atxy2k.CustomTextField.RestrictedTextField;
 import conexion.Conexion;
 
 import javax.swing.JTextField;
@@ -56,6 +57,10 @@ public class Agregar_estacion extends JDialog {
 			txtNombre = new JTextField();
 			txtNombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			txtNombre.setBounds(143, 103, 144, 21);
+			RestrictedTextField restricted = new RestrictedTextField(txtNombre);
+			restricted.setOnlyText(true);
+			restricted.setAcceptSpace(true);
+			restricted.setLimit(20);
 			contentPanel.add(txtNombre);
 		}
 		{
@@ -82,6 +87,10 @@ public class Agregar_estacion extends JDialog {
 			txtDescripcion = new JTextField();
 			txtDescripcion.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			txtDescripcion.setBounds(114, 202, 173, 73);
+			RestrictedTextField restricted = new RestrictedTextField(txtDescripcion);
+			//restricted.setOnlyText(true);
+			restricted.setAcceptSpace(true);
+			restricted.setLimit(50);
 			contentPanel.add(txtDescripcion);
 		}
 		{
@@ -158,6 +167,12 @@ public class Agregar_estacion extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
