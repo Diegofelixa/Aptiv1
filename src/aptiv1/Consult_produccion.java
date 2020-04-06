@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -19,6 +21,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -56,8 +61,60 @@ public class Consult_produccion extends JFrame {
 	    TableRowSorter trs;
 	    private JTable jtProductos;
 	    private JTextField textField;
+	   String usua="";
 	    
-    public Consult_produccion(int privilegio, String nombre) {
+    public Consult_produccion(int privilegio, String nombre) throws SQLException  {
+    	if (nombre!=null) 
+		{
+			Conexion con = new Conexion();
+	        Connection c=(Connection) con.conexion();
+			PreparedStatement selec_pat2 =(PreparedStatement)
+		    c.prepareStatement("select nombre from operador where fk_acceso=(select id_acceso from acceso where usuario="+nombre+")");
+			ResultSet rs2= selec_pat2.executeQuery();
+			if(rs2.next()) 
+				{
+				 	usua = rs2.getString("nombre");
+				}
+		}
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu mn_menu = new JMenu("Opciones ");
+		//mn_menu.setIcon(new ImageIcon(Menu.class.getResource("/imagenes/configurar.png")));
+		menuBar.add(mn_menu);
+	
+		
+		JMenuItem mi_cc = new JMenuItem("Cambiar Contraseña");
+		mi_cc.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+			  cambia C= new cambia(usua);
+			  C.setVisible(true);
+			  
+			}
+		});
+		
+		mn_menu.add(mi_cc);
+		
+		JMenuItem mi_cs = new JMenuItem("Cerrar Sesión");
+		mi_cs.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+				{
+					  int respuesta= JOptionPane.showConfirmDialog(null, "esta a punto de cerrar su sesión "," Estas Seguro? ", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE); 
+					 
+					  if(respuesta==JOptionPane.YES_OPTION) 
+						  {
+							 System.exit(0);
+						  }
+				
+		       }
+		});
+		
+		
+		mn_menu.add(mi_cs);
+		
     	
     	setBounds(100,100,757,464);
     	Fondo f_1= new Fondo();
@@ -103,7 +160,7 @@ public class Consult_produccion extends JFrame {
             label.setBounds(10, 47, 103, 24);
             f_1.add(label);
             
-            String usua="";
+          
 			if (nombre!=null) {
 				Conexion con = new Conexion();
 		        Connection c=(Connection) con.conexion();
@@ -240,11 +297,14 @@ public class Consult_produccion extends JFrame {
             Conexion conn = new Conexion();
             java.sql.Connection con = conn.conexion();
 
+            
+           
             if(privilegio==3) {
             	elim.setVisible(false);
             	mod.setVisible(false);
             	lblUsua.setVisible(false);
             	lblBienbenido.setVisible(false);
+            	menuBar.setVisible(false);
             }
             
             String sql = "Select pr.num_gafet, pr.cantidad_atados, pr.hora_fecha, pr.defectos, e1.nombre_estacion AS 'l1', tur.nombre_turno AS 'l2', cf.id_final AS 'l3' from produccion pr inner join estacion e1 on e1.id_estacion=pr.fk_estacion inner join turno tur on tur.id_turno=pr.fk_turno inner join cable_fin cf on cf.id_final=pr.fk_final";

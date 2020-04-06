@@ -13,12 +13,18 @@ import Atxy2k.CustomTextField.RestrictedTextField;
 import conexion.Conexion;
 
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.Color;
 import javax.swing.ImageIcon;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.PreparedStatement;
@@ -38,7 +44,7 @@ public class Produccion extends JFrame {
 	private JTextField txtcodigo;
 	
 	Combo combo = new Combo();
-
+	String usua="";
 	/**
 	 * Launch the application.
 	 */
@@ -57,8 +63,59 @@ public class Produccion extends JFrame {
 	 * @throws SQLException 
 	 */
 	public Produccion(int privilegio, String nombre) throws SQLException {
+		if (nombre!=null) 
+		{
+			Conexion con = new Conexion();
+	        Connection c=(Connection) con.conexion();
+			PreparedStatement selec_pat2 =(PreparedStatement)
+		    c.prepareStatement("select nombre from operador where fk_acceso=(select id_acceso from acceso where usuario="+nombre+")");
+			ResultSet rs2= selec_pat2.executeQuery();
+			if(rs2.next()) 
+				{
+				 	usua = rs2.getString("nombre");
+				}
+		}
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
 		
-		String usua="";
+		JMenu mn_menu = new JMenu("Opciones ");
+		//mn_menu.setIcon(new ImageIcon(Menu.class.getResource("/imagenes/configurar.png")));
+		menuBar.add(mn_menu);
+	
+		
+		JMenuItem mi_cc = new JMenuItem("Cambiar Contraseña");
+		mi_cc.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+			  cambia C= new cambia(usua);
+			  C.setVisible(true);
+			  
+			}
+		});
+		
+		mn_menu.add(mi_cc);
+		
+		JMenuItem mi_cs = new JMenuItem("Cerrar Sesión");
+		mi_cs.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+				{
+					  int respuesta= JOptionPane.showConfirmDialog(null, "esta a punto de cerrar su sesión "," Estas Seguro? ", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE); 
+					 
+					  if(respuesta==JOptionPane.YES_OPTION) 
+						  {
+							 System.exit(0);
+						  }
+				
+		       }
+		});
+		
+		
+		mn_menu.add(mi_cs);
+		
+		
+		
 		if (nombre!=null) {
 			Conexion con = new Conexion();
 	        Connection c=(Connection) con.conexion();
@@ -211,10 +268,17 @@ public class Produccion extends JFrame {
 		btnConsultar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				Consult_produccion con= new Consult_produccion(privilegio, nombre);
-				 con.setLocationRelativeTo(null);
-                 con.setResizable(false);
-               	con.setVisible(true);
+				Consult_produccion con;
+				try {
+					con = new Consult_produccion(privilegio, nombre);
+					con.setLocationRelativeTo(null);
+	                 con.setResizable(false);
+	               	con.setVisible(true);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				 
 			}
 		});
 		btnConsultar.setBounds(292, 395, 135, 28);
