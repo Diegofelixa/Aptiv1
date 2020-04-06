@@ -22,10 +22,12 @@ import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.awt.Font;
 
 public class Produccion extends JFrame {
 
@@ -51,8 +53,22 @@ public class Produccion extends JFrame {
 	/**
 	 * Create the frame.
 	 * @param privilegio 
+	 * @param nombre 
+	 * @throws SQLException 
 	 */
-	public Produccion(int privilegio) {
+	public Produccion(int privilegio, String nombre) throws SQLException {
+		
+		String usua="";
+		if (nombre!=null) {
+			Conexion con = new Conexion();
+	        Connection c=(Connection) con.conexion();
+			PreparedStatement selec_pat2 =(PreparedStatement)
+		    c.prepareStatement("select nombre from operador where fk_acceso=(select id_acceso from acceso where usuario="+nombre+")");
+			ResultSet rs2= selec_pat2.executeQuery();
+			if(rs2.next()) {
+			 usua = rs2.getString("nombre");
+			}
+		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 573, 495);
 		contentPane = new Fondo();
@@ -115,6 +131,8 @@ public class Produccion extends JFrame {
 		lblTurno.setBounds(317, 79, 46, 14);
 		contentPane.add(lblTurno);
 		
+		 
+		
 		JComboBox cb_turno = new JComboBox();
 		combo.consultar_turno(cb_turno);
 		cb_turno.setBounds(361, 76, 115, 24);
@@ -149,20 +167,29 @@ public class Produccion extends JFrame {
 			            Connection conn = (Connection) objCon.conexion();
 			            ps = conn.prepareStatement("INSERT INTO produccion ( num_gafet, fk_estacion, cantidad_atados, hora_fecha, defectos, fk_turno, fk_final) VALUES (?,(select id_estacion from estacion where nombre_estacion='"+cb_estacion.getSelectedItem().toString() +"'),?,?,?,(select id_turno from turno where nombre_turno='"+cb_turno.getSelectedItem().toString() +"'),?)");
 			            
+			            
+			            
 			            ps.setString(1, txtgafete.getText());
 			            ps.setString(2, txtfinal.getText());
 			            ps.setString(3,hourdateFormat.format(date));
 			            ps.setString(4, txtdefectos.getText());
 			            ps.setString(5, txtcodigo.getText());
+			            
+			            ps.execute();
+			            
+			            ps=conn.prepareStatement("Insert into inventario( cantidad_atados, fecha_hora, fk_final) values ('"+txtfinal.getText()+"','"+hourdateFormat.format(date)+"','"+ txtcodigo.getText()+"')");
 			           
 
 			            ps.execute();
+			            
 
-			            JOptionPane.showMessageDialog(null, "Producto Guardado");
+			            JOptionPane.showMessageDialog(null, "Guardado con exito");
 			          
 			           
-			         	            
-
+			         	    txtgafete.setText("");  
+			         	    txtfinal.setText("");
+			         	    txtdefectos.setText("");
+			         	    txtcodigo.setText("");
 			           
 
 			        } catch (SQLException ex) {
@@ -184,7 +211,7 @@ public class Produccion extends JFrame {
 		btnConsultar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				Consult_produccion con= new Consult_produccion(privilegio);
+				Consult_produccion con= new Consult_produccion(privilegio, nombre);
 				 con.setLocationRelativeTo(null);
                  con.setResizable(false);
                	con.setVisible(true);
@@ -192,5 +219,16 @@ public class Produccion extends JFrame {
 		});
 		btnConsultar.setBounds(292, 395, 135, 28);
 		contentPane.add(btnConsultar);
+		
+		JLabel lblUsua = new JLabel("");
+		lblUsua.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblUsua.setText(usua);
+		lblUsua.setBounds(481, 11, 84, 21);
+		contentPane.add(lblUsua);
+		
+		JLabel lblBienvenido = new JLabel("Bienvenido");
+		lblBienvenido.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblBienvenido.setBounds(398, 11, 100, 21);
+		contentPane.add(lblBienvenido);
 	}
 }

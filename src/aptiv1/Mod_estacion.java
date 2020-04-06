@@ -62,9 +62,7 @@ public class Mod_estacion extends JDialog {
 					txtDescripcion = new JTextField();
 			txtDescripcion.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			txtDescripcion.setBounds(121, 164, 173, 73);
-			RestrictedTextField restricted = new RestrictedTextField(txtDescripcion);
-				restricted.setOnlyText(true);
-				restricted.setLimit(50);
+			
 			contentPanel.add(txtDescripcion);
 		
 			JLabel label;
@@ -94,9 +92,7 @@ public class Mod_estacion extends JDialog {
 			txtNombre = new JTextField();
 			txtNombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			txtNombre.setBounds(150, 82, 144, 21);
-			restricted = new RestrictedTextField(txtNombre);
-			restricted.setOnlyText(true);
-			restricted.setLimit(20);
+			
 			contentPanel.add(txtNombre);
 			
 		
@@ -195,6 +191,7 @@ public class Mod_estacion extends JDialog {
 
 			        
 			        } 
+					
 					
 				});
 				okButton.setActionCommand("OK");

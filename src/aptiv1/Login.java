@@ -157,18 +157,18 @@ public class Login  {
 		 		                 frmLogin.setVisible(false);
 		 		                 rs.next();
 		                	} else if(rs.getInt("privilegios")== 3 ){
-		                		
+		                		String nombre=txtusuario.getText();
 		                		int privilegio=rs.getInt("privilegios");
-		                		 Produccion menu= new Produccion(privilegio);		                 
+		                		 Produccion menu= new Produccion(privilegio, nombre);		                 
 		 		                 menu.setLocationRelativeTo(null);
 		 		                 menu.setResizable(false);
 		 		                 menu.setVisible(true);
 		 		                 frmLogin.setVisible(false);
 		 		                rs.next();
 		                	} else if(rs.getInt("privilegios")== 2 ){
-		                		
+		                		String nombre=txtusuario.getText();
 		                		int privilegio=rs.getInt("privilegios");
-		                		 Consult_produccion menu= new Consult_produccion(privilegio);		                 
+		                		 Consult_produccion menu= new Consult_produccion(privilegio, nombre);		                 
 		 		                 menu.setLocationRelativeTo(null);
 		 		                 menu.setResizable(false);
 		 		                 menu.setVisible(true);

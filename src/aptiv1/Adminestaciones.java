@@ -345,7 +345,7 @@ public class Adminestaciones extends JFrame {
 	            String codigo = jtProductos.getValueAt(Fila, 0).toString();
 
 	            
-	            int respuesta= JOptionPane.showConfirmDialog(null, "Realmente quiere eliminar este cable?","Confirmacion de Eliminar", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+	            int respuesta= JOptionPane.showConfirmDialog(null, "Realmente quiere eliminar esta Estacion ?","Confirmacion de Eliminar", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 	            if(respuesta==JOptionPane.YES_OPTION) {
 	            	 ps = conn.prepareStatement("DELETE FROM estacion WHERE nombre_estacion=?");
 	                 ps.setString(1, codigo);

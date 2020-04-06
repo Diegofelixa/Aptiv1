@@ -57,7 +57,7 @@ public class Consult_produccion extends JFrame {
 	    private JTable jtProductos;
 	    private JTextField textField;
 	    
-    public Consult_produccion(int privilegio) {
+    public Consult_produccion(int privilegio, String nombre) {
     	
     	setBounds(100,100,757,464);
     	Fondo f_1= new Fondo();
@@ -103,7 +103,19 @@ public class Consult_produccion extends JFrame {
             label.setBounds(10, 47, 103, 24);
             f_1.add(label);
             
-            
+            String usua="";
+			if (nombre!=null) {
+				Conexion con = new Conexion();
+		        Connection c=(Connection) con.conexion();
+				PreparedStatement selec_pat2 =(PreparedStatement)
+			    c.prepareStatement("select nombre from operador where fk_acceso=(select id_acceso from acceso where usuario="+nombre+")");
+				ResultSet rs2= selec_pat2.executeQuery();
+				if(rs2.next()) {
+				 usua = rs2.getString("nombre");
+				}
+			}
+			
+	       
             
             JButton mod = new JButton("Modificar");
             mod.addMouseListener(new MouseAdapter() {
@@ -214,6 +226,15 @@ public class Consult_produccion extends JFrame {
             elim.setText("Eliminar");
             elim.setBounds(443, 48, 101, 23);
             f_1.add(elim);
+            
+            JLabel lblUsua = new JLabel("usua");
+            lblUsua.setBounds(614, 12, 90, 25);
+            lblUsua.setText(usua);
+            f_1.add(lblUsua);
+            
+            JLabel lblBienbenido = new JLabel("Bienvenido");
+            lblBienbenido.setBounds(537, 12, 67, 25);
+            f_1.add(lblBienbenido);
             PreparedStatement ps = null;
             ResultSet rs = null;
             Conexion conn = new Conexion();
@@ -222,6 +243,8 @@ public class Consult_produccion extends JFrame {
             if(privilegio==3) {
             	elim.setVisible(false);
             	mod.setVisible(false);
+            	lblUsua.setVisible(false);
+            	lblBienbenido.setVisible(false);
             }
             
             String sql = "Select pr.num_gafet, pr.cantidad_atados, pr.hora_fecha, pr.defectos, e1.nombre_estacion AS 'l1', tur.nombre_turno AS 'l2', cf.id_final AS 'l3' from produccion pr inner join estacion e1 on e1.id_estacion=pr.fk_estacion inner join turno tur on tur.id_turno=pr.fk_turno inner join cable_fin cf on cf.id_final=pr.fk_final";
